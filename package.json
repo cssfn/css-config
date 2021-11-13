@@ -1,0 +1,36 @@
+{
+  "name": "@cssfn/css-config",
+  "version": "1.0.0",
+  "description": "Reads/Writes CSS configuration of HTML components using centralized CSS variables.",
+  "main": "dist/css-config.js",
+  "types": "dist/css-config.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cssfn/css-config.git"
+  },
+  "keywords": [
+    "css",
+    "stylesheet",
+    "config",
+    "configuration",
+    "variables",
+    "property",
+    "javascript",
+    "object",
+    "typescript"
+  ],
+  "author": "heymarco",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cssfn/css-config/issues"
+  },
+  "homepage": "https://github.com/cssfn/css-config#readme",
+  "dependencies": {
+    "@cssfn/css-types": "^1.0.1",
+    "@cssfn/cssfn": "^1.0.2",
+    "@cssfn/types": "^1.0.2"
+  }
+}
