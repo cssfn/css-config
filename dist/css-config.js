@@ -1,10 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.overwriteParentProps = exports.overwriteProps = exports.restoreProps = exports.backupProps = exports.usesSuffixedProps = exports.usesPrefixedProps = exports.usesGeneralProps = exports.default = exports.createCssConfig = void 0;
-const cssfn_1 = require("@cssfn/cssfn"); // cssfn core
+import { 
+// styles:
+createSheet, 
+// compositions:
+globalDef, 
+// rules:
+rule, noRule, } from '@cssfn/cssfn'; // cssfn core
 // others libs:
-const pascal_case_1 = require("pascal-case"); // pascal-case support for jss
-const camel_case_1 = require("camel-case"); // camel-case  support for jss
+import { pascalCase } from 'pascal-case'; // pascal-case support for jss
+import { camelCase } from 'camel-case'; // camel-case  support for jss
 // defaults:
 const _defaultPrefix = '';
 const _defaultRule = ':root';
@@ -368,10 +371,10 @@ const createCssConfig = (initialProps, options) => {
         // detach the old styleSheet (if any):
         genStyleSheet?.detach();
         // create a new styleSheet & attach:
-        genStyleSheet = (0, cssfn_1.createSheet)([
-            (0, cssfn_1.global)([
-                (0, cssfn_1.rule)(settings.rule, genProps),
-                (0, cssfn_1.noRule)(genKeyframes),
+        genStyleSheet = createSheet([
+            globalDef([
+                rule(settings.rule, genProps),
+                noRule(genKeyframes),
             ]),
         ])
             .attach();
@@ -549,15 +552,14 @@ const createCssConfig = (initialProps, options) => {
         new Proxy(settings, settingsHandler),
     ];
 };
-exports.createCssConfig = createCssConfig;
-exports.default = createCssConfig;
+export { createCssConfig, createCssConfig as default };
 // utilities:
 /**
  * Includes the *general* props in the specified `cssProps`.
  * @param cssProps The collection of the css vars to be filtered.
  * @returns A `PropList` which is the copy of the `cssProps` that only having *general* props.
  */
-const usesGeneralProps = (cssProps) => {
+export const usesGeneralProps = (cssProps) => {
     const propList = {};
     for (const [propName, propValue] of Object.entries(cssProps)) {
         // excludes the entries if the `propName` matching with following:
@@ -636,7 +638,6 @@ const usesGeneralProps = (cssProps) => {
     } // for
     return propList;
 };
-exports.usesGeneralProps = usesGeneralProps;
 /**
  * Includes the props in the specified `cssProps` starting with specified `prefix`.
  * @param cssProps The collection of the css vars to be filtered.
@@ -644,7 +645,7 @@ exports.usesGeneralProps = usesGeneralProps;
  * @returns A `PropList` which is the copy of the `cssProps` that only having matching `prefix` name.
  * The returning props has been normalized (renamed), so they don't start with `prefix`.
  */
-const usesPrefixedProps = (cssProps, prefix) => {
+export const usesPrefixedProps = (cssProps, prefix) => {
     const propList = {};
     for (const [propName, propValue] of Object.entries(cssProps)) {
         // excludes the entries if the `propName` not starting with specified `prefix`:
@@ -661,11 +662,10 @@ const usesPrefixedProps = (cssProps, prefix) => {
          * menusColor => sColor => `menus` is not part of `menu`
          */
         // if match => normalize the case => include it:
-        propList[(0, camel_case_1.camelCase)(propNameLeft)] = propValue;
+        propList[camelCase(propNameLeft)] = propValue;
     } // for
     return propList;
 };
-exports.usesPrefixedProps = usesPrefixedProps;
 /**
  * Includes the props in the specified `cssProps` ending with specified `suffix`.
  * @param cssProps The collection of the css vars to be filtered.
@@ -673,8 +673,8 @@ exports.usesPrefixedProps = usesPrefixedProps;
  * @returns A `PropList` which is the copy of the `cssProps` that only having matching `suffix` name.
  * The returning props has been normalized (renamed), so they don't end with `suffix`.
  */
-const usesSuffixedProps = (cssProps, suffix) => {
-    suffix = (0, pascal_case_1.pascalCase)(suffix);
+export const usesSuffixedProps = (cssProps, suffix) => {
+    suffix = pascalCase(suffix);
     const propList = {};
     for (const [propName, propValue] of Object.entries(cssProps)) {
         // excludes the entries if the `propName` not ending with specified `suffix`:
@@ -693,7 +693,6 @@ const usesSuffixedProps = (cssProps, suffix) => {
     } // for
     return propList;
 };
-exports.usesSuffixedProps = usesSuffixedProps;
 /**
  * Backups the prop's values in the specified `cssProps`.
  * @param cssProps The collection of the css vars to be backed up.
@@ -703,15 +702,14 @@ exports.usesSuffixedProps = usesSuffixedProps;
  * --com-backgBak     : var(--com-backg)
  * --com-boxShadowBak : var(--com-boxShadow)
  */
-const backupProps = (cssProps, backupSuff = 'Bak') => {
-    backupSuff = (0, pascal_case_1.pascalCase)(backupSuff);
+export const backupProps = (cssProps, backupSuff = 'Bak') => {
+    backupSuff = pascalCase(backupSuff);
     const propList = {};
     for (const propName of Object.keys(cssProps)) {
         propList[`${propName}${backupSuff}`] = `var(${propName})`;
     } // for
     return propList;
 };
-exports.backupProps = backupProps;
 /**
  * Restores the prop's values in the specified `cssProps`.
  * @param cssProps The collection of the css vars to be restored.
@@ -721,21 +719,20 @@ exports.backupProps = backupProps;
  * --com-backg     : var(--com-backgBak)
  * --com-boxShadow : var(--com-boxShadowBak)
  */
-const restoreProps = (cssProps, backupSuff = 'Bak') => {
+export const restoreProps = (cssProps, backupSuff = 'Bak') => {
     const propList = {};
     for (const propName of Object.keys(cssProps)) {
         propList[propName] = `var(${propName}${backupSuff})`;
     } // for
     return propList;
 };
-exports.restoreProps = restoreProps;
 /**
  * Overwrites prop declarations from the specified `cssProps` (source) to the specified `cssDecls` (target).
  * @param cssDecls The collection of the css vars to be overwritten (target).
  * @param cssProps The collection of the css vars for overwritting (source).
  * @returns A `PropList` which is the copy of the `cssProps` that overwrites to the specified `cssDecls`.
  */
-const overwriteProps = (cssDecls, cssProps) => {
+export const overwriteProps = (cssDecls, cssProps) => {
     const propList = {};
     for (const [propName, propValue] of Object.entries(cssProps)) {
         const targetPropName = cssDecls[propName];
@@ -745,7 +742,6 @@ const overwriteProps = (cssDecls, cssProps) => {
     } // for
     return propList;
 };
-exports.overwriteProps = overwriteProps;
 /**
  * Overwrites prop declarations from the specified `cssProps` (source) to the specified `cssDeclss` (targets).
  * @param cssProps The collection of the css vars for overwritting (source).
@@ -753,7 +749,7 @@ exports.overwriteProps = overwriteProps;
  * The order must be from the most specific parent to the least specific one.
  * @returns A `PropList` which is the copy of the `cssProps` that overwrites to the specified `cssDeclss`.
  */
-const overwriteParentProps = (cssProps, ...cssDeclss) => {
+export const overwriteParentProps = (cssProps, ...cssDeclss) => {
     const propList = {};
     for (const [propName, propValue] of Object.entries(cssProps)) {
         const targetPropName = (() => {
@@ -769,4 +765,3 @@ const overwriteParentProps = (cssProps, ...cssDeclss) => {
     }
     return propList;
 };
-exports.overwriteParentProps = overwriteParentProps;
