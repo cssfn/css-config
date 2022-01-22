@@ -1,6 +1,6 @@
 {
   "name": "@cssfn/css-config",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Reads/Writes CSS configuration of HTML components using centralized CSS variables.",
   "type": "module",
   "main": "dist/css-config.js",
@@ -30,8 +30,10 @@
   },
   "homepage": "https://github.com/cssfn/css-config#readme",
   "dependencies": {
-    "@cssfn/css-types": "^1.0.2",
-    "@cssfn/cssfn": "^1.0.7",
-    "@cssfn/types": "^1.0.3"
+    "@cssfn/css-types": "^1.0.4",
+    "@cssfn/cssfn": "^1.0.9",
+    "@cssfn/types": "^1.0.4",
+    "camel-case": "^4.1.2",
+    "pascal-case": "^3.1.2"
   }
 }

@@ -1,6 +1,6 @@
 import type { ProductOrFactory } from '@cssfn/types';
 import type { Cust } from '@cssfn/css-types';
-import { PropList } from '@cssfn/cssfn';
+import { CssValue, CssProps } from '@cssfn/cssfn';
 export declare type Refs<TProps extends {}> = {
     [key in keyof TProps]: Cust.Ref;
 };
@@ -36,6 +36,9 @@ export interface CssConfigSettings extends CssConfigOptions {
     refresh: ((immediately?: boolean) => void);
 }
 export declare type CssConfig<TProps extends {}> = readonly [Refs<TProps>, Decls<TProps>, Vals<TProps>, CssConfigSettings];
+export declare type CssConfigProps = {
+    [PropName: string]: CssValue;
+};
 /**
  * Create, read, update, and delete configurations using *css variables* (css custom properties) stored at `:root` level (default) or at the desired `rule`.
  * The config's values can be *accessed directly* in CSS and DOM.
@@ -55,14 +58,14 @@ export declare type CssConfig<TProps extends {}> = readonly [Refs<TProps>, Decls
  * Supports delete property, eg:
  * `myButtonConfig.vals.myFavColor = undefined
  */
-declare const createCssConfig: <TProps extends {}>(initialProps: ProductOrFactory<TProps>, options?: CssConfigOptions | undefined) => CssConfig<TProps>;
+declare const createCssConfig: <TProps extends CssConfigProps>(initialProps: ProductOrFactory<TProps>, options?: CssConfigOptions | undefined) => CssConfig<TProps>;
 export { createCssConfig, createCssConfig as default };
 /**
  * Includes the *general* props in the specified `cssProps`.
  * @param cssProps The collection of the css vars to be filtered.
  * @returns A `PropList` which is the copy of the `cssProps` that only having *general* props.
  */
-export declare const usesGeneralProps: (cssProps: Refs<{}>) => PropList;
+export declare const usesGeneralProps: (cssProps: Refs<{}>) => CssProps;
 /**
  * Includes the props in the specified `cssProps` starting with specified `prefix`.
  * @param cssProps The collection of the css vars to be filtered.
@@ -70,7 +73,7 @@ export declare const usesGeneralProps: (cssProps: Refs<{}>) => PropList;
  * @returns A `PropList` which is the copy of the `cssProps` that only having matching `prefix` name.
  * The returning props has been normalized (renamed), so they don't start with `prefix`.
  */
-export declare const usesPrefixedProps: (cssProps: Refs<{}>, prefix: string) => PropList;
+export declare const usesPrefixedProps: (cssProps: Refs<{}>, prefix: string) => CssProps;
 /**
  * Includes the props in the specified `cssProps` ending with specified `suffix`.
  * @param cssProps The collection of the css vars to be filtered.
@@ -78,7 +81,7 @@ export declare const usesPrefixedProps: (cssProps: Refs<{}>, prefix: string) => 
  * @returns A `PropList` which is the copy of the `cssProps` that only having matching `suffix` name.
  * The returning props has been normalized (renamed), so they don't end with `suffix`.
  */
-export declare const usesSuffixedProps: (cssProps: Refs<{}>, suffix: string) => PropList;
+export declare const usesSuffixedProps: (cssProps: Refs<{}>, suffix: string) => CssProps;
 /**
  * Backups the prop's values in the specified `cssProps`.
  * @param cssProps The collection of the css vars to be backed up.
@@ -88,7 +91,7 @@ export declare const usesSuffixedProps: (cssProps: Refs<{}>, suffix: string) => 
  * --com-backgBak     : var(--com-backg)
  * --com-boxShadowBak : var(--com-boxShadow)
  */
-export declare const backupProps: (cssProps: Refs<{}>, backupSuff?: string) => PropList;
+export declare const backupProps: (cssProps: Refs<{}>, backupSuff?: string) => CssProps;
 /**
  * Restores the prop's values in the specified `cssProps`.
  * @param cssProps The collection of the css vars to be restored.
@@ -98,14 +101,14 @@ export declare const backupProps: (cssProps: Refs<{}>, backupSuff?: string) => P
  * --com-backg     : var(--com-backgBak)
  * --com-boxShadow : var(--com-boxShadowBak)
  */
-export declare const restoreProps: (cssProps: Refs<{}>, backupSuff?: string) => PropList;
+export declare const restoreProps: (cssProps: Refs<{}>, backupSuff?: string) => CssProps;
 /**
  * Overwrites prop declarations from the specified `cssProps` (source) to the specified `cssDecls` (target).
  * @param cssDecls The collection of the css vars to be overwritten (target).
  * @param cssProps The collection of the css vars for overwritting (source).
  * @returns A `PropList` which is the copy of the `cssProps` that overwrites to the specified `cssDecls`.
  */
-export declare const overwriteProps: <TProps extends {}>(cssDecls: Decls<TProps>, cssProps: Refs<{}>) => PropList;
+export declare const overwriteProps: <TProps extends {}>(cssDecls: Decls<TProps>, cssProps: Refs<{}>) => CssProps;
 /**
  * Overwrites prop declarations from the specified `cssProps` (source) to the specified `cssDeclss` (targets).
  * @param cssProps The collection of the css vars for overwritting (source).
@@ -113,4 +116,4 @@ export declare const overwriteProps: <TProps extends {}>(cssDecls: Decls<TProps>
  * The order must be from the most specific parent to the least specific one.
  * @returns A `PropList` which is the copy of the `cssProps` that overwrites to the specified `cssDeclss`.
  */
-export declare const overwriteParentProps: (cssProps: Refs<{}>, ...cssDeclss: Decls<{}>[]) => PropList;
+export declare const overwriteParentProps: (cssProps: Refs<{}>, ...cssDeclss: Decls<{}>[]) => CssProps;
