@@ -532,18 +532,21 @@ const createCssConfig = (initialProps, options) => {
         new Proxy(unusedObj, {
             get: (_unusedObj, propName) => getRef(propName),
             set: (_unusedObj, propName, newValue) => setDirect(propName, newValue),
+            deleteProperty: (_unusedObj, propName) => setDirect(propName, null),
             ownKeys: (_unusedObj) => getPropList(),
             getOwnPropertyDescriptor: (_unusedObj, propName) => getPropDescRef(propName),
         }),
         new Proxy(unusedObj, {
             get: (_unusedObj, propName) => getDecl(propName),
             set: (_unusedObj, propName, newValue) => setDirect(propName, newValue),
+            deleteProperty: (_unusedObj, propName) => setDirect(propName, null),
             ownKeys: (_unusedObj) => getPropList(),
             getOwnPropertyDescriptor: (_unusedObj, propName) => getPropDescDecl(propName),
         }),
         new Proxy(unusedObj, {
             get: (_unusedObj, propName) => getVal(propName),
             set: (_unusedObj, propName, newValue) => setDirect(propName, newValue),
+            deleteProperty: (_unusedObj, propName) => setDirect(propName, null),
             ownKeys: (_unusedObj) => getPropList(),
             getOwnPropertyDescriptor: (_unusedObj, propName) => getPropDescVal(propName),
         }),
