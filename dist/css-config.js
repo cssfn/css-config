@@ -627,7 +627,7 @@ export const usesGeneralProps = (cssProps) => {
          * valid   => (icon)Valid   => valid
          * invalid => (icon)Invalid => invalid
          */
-        if ((/^(backgGrad(Inline|Block)?|backgOverlay(Img|Size)?|orientation|align|horzAlign|vertAlign|spacing|img|size|valid|invalid|transDuration|(top|bottom|left|right)Transform|fontFamily\w+|fontSize[0-9]+)$/).test(propName))
+        if ((/^(backgGrad(Inline|Block)?|backg(Overlay|Stripped)(Img|Size)?|orientation|align|horzAlign|vertAlign|spacing|img|size|valid|invalid|transDuration|(top|bottom|left|right)Transform|fontFamily\w+|fontSize[0-9]+)$/).test(propName))
             continue; // exclude
         // props starting with `@`:
         /**
@@ -656,7 +656,7 @@ export const usesPrefixedProps = (cssProps, prefix) => {
             continue; // exclude
         if (propName.length <= prefix.length)
             continue; // at least 1 char left;
-        const propNameLeft = propName.substr(prefix.length); // remove the `prefix`
+        const propNameLeft = propName.slice(prefix.length); // remove the `prefix`
         if (!(/^[A-Z]/).test(propNameLeft))
             continue; // the first character must be a capital
         /**
@@ -685,7 +685,7 @@ export const usesSuffixedProps = (cssProps, suffix) => {
             continue; // exclude
         if (propName.length <= suffix.length)
             continue; // at least 1 char left;
-        const propNameLeft = propName.substr(0, propName.length - suffix.length); // remove the `suffix`
+        const propNameLeft = propName.slice(0, -suffix.length); // remove the `suffix`
         /**
          * removing `valid` => `Valid`:
          * colorValid   => color => ok
