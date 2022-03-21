@@ -615,7 +615,7 @@ export const usesGeneralProps = (cssProps) => {
          * inlineSizeBlock
          *  blockSizeBlock
          */
-        if ((/^(((((inline|block)|(min|max)(Inline|Block))Size)|cursor)(Inline|Block))$/).test(propName))
+        if ((/^(((((inline|block)|(min|max)(Inline|Block))Size)|(margin|padding)(Inline|Block)|cursor)(Inline|Block))$/).test(propName))
             continue; // exclude
         // special props:
         /**
@@ -645,10 +645,11 @@ export const usesGeneralProps = (cssProps) => {
  * Includes the props in the specified `cssProps` starting with specified `prefix`.
  * @param cssProps The collection of the css vars to be filtered.
  * @param prefix The prefix name of the props to be *included*.
+ * @param remove Remove the prefix to the returning result. The default is `true`.
  * @returns A `PropList` which is the copy of the `cssProps` that only having matching `prefix` name.
- * The returning props has been normalized (renamed), so they don't start with `prefix`.
+ * If `remove === true`, the returning props has been normalized (renamed), so they don't start with `prefix`.
  */
-export const usesPrefixedProps = (cssProps, prefix) => {
+export const usesPrefixedProps = (cssProps, prefix, remove = true) => {
     const result = {};
     for (const [propName, propValue] of Object.entries(cssProps)) {
         // excludes the entries if the `propName` not starting with specified `prefix`:
@@ -665,7 +666,7 @@ export const usesPrefixedProps = (cssProps, prefix) => {
          * menusColor => sColor => `menus` is not part of `menu`
          */
         // if match => normalize the case => include it:
-        result[camelCase(propNameLeft)] = propValue;
+        result[remove ? camelCase(propNameLeft) : propName] = propValue;
     } // for
     return result;
 };
@@ -673,10 +674,11 @@ export const usesPrefixedProps = (cssProps, prefix) => {
  * Includes the props in the specified `cssProps` ending with specified `suffix`.
  * @param cssProps The collection of the css vars to be filtered.
  * @param suffix The suffix name of the props to be *included*.
+ * @param remove Remove the suffix to the returning result. The default is `true`.
  * @returns A `PropList` which is the copy of the `cssProps` that only having matching `suffix` name.
- * The returning props has been normalized (renamed), so they don't end with `suffix`.
+ * If `remove === true`, the returning props has been normalized (renamed), so they don't end with `suffix`.
  */
-export const usesSuffixedProps = (cssProps, suffix) => {
+export const usesSuffixedProps = (cssProps, suffix, remove = true) => {
     suffix = pascalCase(suffix);
     const result = {};
     for (const [propName, propValue] of Object.entries(cssProps)) {
@@ -685,7 +687,7 @@ export const usesSuffixedProps = (cssProps, suffix) => {
             continue; // exclude
         if (propName.length <= suffix.length)
             continue; // at least 1 char left;
-        const propNameLeft = propName.slice(0, -suffix.length); // remove the `suffix`
+        const propNameLeft = remove ? propName.slice(0, -suffix.length) : propName; // remove the `suffix`
         /**
          * removing `valid` => `Valid`:
          * colorValid   => color => ok

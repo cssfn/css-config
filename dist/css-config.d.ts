@@ -70,18 +70,20 @@ export declare const usesGeneralProps: (cssProps: Refs<{}>) => CssProps;
  * Includes the props in the specified `cssProps` starting with specified `prefix`.
  * @param cssProps The collection of the css vars to be filtered.
  * @param prefix The prefix name of the props to be *included*.
+ * @param remove Remove the prefix to the returning result. The default is `true`.
  * @returns A `PropList` which is the copy of the `cssProps` that only having matching `prefix` name.
- * The returning props has been normalized (renamed), so they don't start with `prefix`.
+ * If `remove === true`, the returning props has been normalized (renamed), so they don't start with `prefix`.
  */
-export declare const usesPrefixedProps: (cssProps: Refs<{}>, prefix: string) => CssProps;
+export declare const usesPrefixedProps: (cssProps: Refs<{}>, prefix: string, remove?: boolean) => CssProps;
 /**
  * Includes the props in the specified `cssProps` ending with specified `suffix`.
  * @param cssProps The collection of the css vars to be filtered.
  * @param suffix The suffix name of the props to be *included*.
+ * @param remove Remove the suffix to the returning result. The default is `true`.
  * @returns A `PropList` which is the copy of the `cssProps` that only having matching `suffix` name.
- * The returning props has been normalized (renamed), so they don't end with `suffix`.
+ * If `remove === true`, the returning props has been normalized (renamed), so they don't end with `suffix`.
  */
-export declare const usesSuffixedProps: (cssProps: Refs<{}>, suffix: string) => CssProps;
+export declare const usesSuffixedProps: (cssProps: Refs<{}>, suffix: string, remove?: boolean) => CssProps;
 /**
  * Backups the prop's values in the specified `cssProps`.
  * @param cssProps The collection of the css vars to be backed up.
